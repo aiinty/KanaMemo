@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -19,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aiinty.kanamemo.ui.theme.KanaMemoTheme
@@ -54,6 +57,14 @@ fun MainView(modifier: Modifier = Modifier) {
     ) {
         val isHiragana = remember { mutableStateOf(true) }
         val currentText = remember { mutableStateOf("") }
+        var textLength = remember { mutableStateOf("") }
+
+        OutlinedTextField(
+            value = textLength.value,
+            onValueChange = { textLength.value = it },
+            label = { Text("Enter length") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
 
         Column(Modifier.selectableGroup())
         {
@@ -81,7 +92,7 @@ fun MainView(modifier: Modifier = Modifier) {
 
         Button(
             onClick = {
-                currentText.value = createQuestion(50, when(isHiragana.value) {
+                currentText.value = createQuestion(textLength.value.toInt(), when(isHiragana.value) {
                     true -> Constants.KanaType.HIRAGANA
                     false -> Constants.KanaType.KATAKANA
                 }).question
