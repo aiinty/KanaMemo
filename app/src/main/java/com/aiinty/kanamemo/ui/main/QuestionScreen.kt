@@ -1,5 +1,6 @@
 package com.aiinty.kanamemo.ui.main
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,19 +20,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aiinty.kanamemo.core.Question
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aiinty.kanamemo.core.kana.Constants
-import com.aiinty.kanamemo.core.kana.Kana
+import com.aiinty.kanamemo.ui.viewmodel.QuestionScreenViewModel
 
 @Composable
-fun QuestionScreen(modifier: Modifier = Modifier) {
+fun QuestionScreen(
+    modifier: Modifier = Modifier,
+    viewModel: QuestionScreenViewModel = viewModel()
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxSize().padding(16.dp),
+        modifier = modifier.fillMaxSize().padding(16.dp, 32.dp),
     ) {
         val isHiragana = remember { mutableStateOf(true) }
         val textLength = remember { mutableStateOf("") }
-        val currentQuestion = remember { mutableStateOf(Question()) }
+        val showAnswer = remember { mutableStateOf(false) }
 
         OutlinedTextField(
             value = textLength.value,
@@ -49,7 +53,6 @@ fun QuestionScreen(modifier: Modifier = Modifier) {
                 )
                 Text(
                     text = "Hiragana",
-                    fontSize = 24.sp
                 )
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -59,17 +62,20 @@ fun QuestionScreen(modifier: Modifier = Modifier) {
                 )
                 Text(
                     text = "Katakana",
-                    fontSize = 24.sp
                 )
             }
         }
 
         Button(
             onClick = {
-                currentQuestion.value = createQuestion(textLength.value.toInt(), when(isHiragana.value) {
-                    true -> Constants.KanaType.HIRAGANA
-                    false -> Constants.KanaType.KATAKANA
-                })
+                val length = textLength.value.toIntOrNull()
+                if (length != null && length > 0) {
+                    showAnswer.value = false
+                    viewModel.createQuestion(textLength.value.toInt(), when(isHiragana.value) {
+                        true -> Constants.KanaType.HIRAGANA
+                        false -> Constants.KanaType.KATAKANA
+                    })
+                }
             }) {
             Text(
                 text = "Generate text",
@@ -79,15 +85,41 @@ fun QuestionScreen(modifier: Modifier = Modifier) {
         Text(
             text = "Kana text:",
             fontSize = 32.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(top = 32.dp)
         )
         Text(
-            text = currentQuestion.value.question,
+            text = viewModel.question.question,
             fontSize = 24.sp
         )
-    }
-}
 
-private fun createQuestion(length: Int, kana: Constants.KanaType) : Question {
-    return Question(Kana.GenerateRandomText(length, kana))
+        Button(
+            onClick = {
+                if (viewModel.question.text.isNotEmpty()) {
+                    showAnswer.value = !showAnswer.value
+                }
+            }
+        ) {
+            AnimatedVisibility(showAnswer.value) {
+                Text("Hide answer")
+            }
+            AnimatedVisibility(!showAnswer.value) {
+                Text("Show answer")
+            }
+        }
+
+        Text(
+            text = "Answer text:",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(top = 32.dp)
+        )
+
+        AnimatedVisibility(showAnswer.value) {
+            Text(
+                text = viewModel.question.answer,
+                fontSize = 24.sp
+            )
+        }
+    }
 }

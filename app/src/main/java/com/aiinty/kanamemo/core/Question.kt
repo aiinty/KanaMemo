@@ -3,7 +3,7 @@ package com.aiinty.kanamemo.core
 import com.aiinty.kanamemo.core.kana.Mora
 
 class Question(
-    val text: ArrayList<Mora> = arrayListOf(Mora("", ""))
+    val text: ArrayList<Mora> = arrayListOf()
 ) {
 
     var question = ""
@@ -11,6 +11,6 @@ class Question(
 
     init {
         text.forEach { entry -> question += entry.char }
-        text.forEach { entry -> answer += entry.reading }
+        text.forEach { entry -> answer += entry.reading + " " }
     }
 }
