@@ -17,6 +17,5 @@ class Kana {
             }
             return result
         }
-
     }
 }
