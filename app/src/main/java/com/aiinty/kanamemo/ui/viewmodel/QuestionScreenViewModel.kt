@@ -13,6 +13,6 @@ class QuestionScreenViewModel : ViewModel() {
     var question by mutableStateOf(Question())
 
     fun createQuestion(length: Int, kana: Constants.KanaType) {
-        question = Question(Kana.GenerateRandomText(length, kana))
+        question = Question(Kana.generateRandomText(length, kana))
     }
 }

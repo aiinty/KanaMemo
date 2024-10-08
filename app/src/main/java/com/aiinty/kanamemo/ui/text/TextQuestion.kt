@@ -1,4 +1,4 @@
-package com.aiinty.kanamemo.ui.main
+package com.aiinty.kanamemo.ui.text
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
@@ -25,7 +25,7 @@ import com.aiinty.kanamemo.core.kana.Constants
 import com.aiinty.kanamemo.ui.viewmodel.QuestionScreenViewModel
 
 @Composable
-fun QuestionScreen(
+fun TextQuestion(
     modifier: Modifier = Modifier,
     viewModel: QuestionScreenViewModel = viewModel()
 ) {
