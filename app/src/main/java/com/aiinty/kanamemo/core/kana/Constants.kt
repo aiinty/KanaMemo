@@ -1,15 +1,22 @@
 package com.aiinty.kanamemo.core.kana
 
+/**
+ *  A class containing the necessary constants.
+ */
 class Constants {
 
+    /**
+     * An enum defining alphabet types.
+     */
     enum class KanaType {
         HIRAGANA,
         KATAKANA
     }
 
     companion object {
-        //Hepburn romanization of some UNICODE chars
-        //0x3041 - 0x309f
+        /**
+         * An Hepburn romanization of some UNICODE chars of hiragana (0x3041 - 0x309f).
+         */
         val BASIC_HIRAGANA = mapOf(
             "あ" to "a", "い" to "i", "う" to "u", "え" to "e", "お" to "o",
             "か" to "ka", "き" to "ki", "く" to "ku", "け" to "ke", "こ" to "ko",
@@ -27,9 +34,9 @@ class Constants {
             "ら" to "ra", "り" to "ri", "る" to "ru", "れ" to "re", "ろ" to "ro",
             "わ" to "wa", "を" to "wo", "ん" to "n",
        )
-
-        //Hepburn romanization of some UNICODE chars
-        //0x30a0 - 0x30ff
+        /**
+         * An Hepburn romanization of some UNICODE chars of katakana 0x30a0 - 0x30ff).
+         */
         val BASIC_KATAKANA = mapOf(
             "ア" to "a", "イ" to "i", "ウ" to "u", "エ" to "e", "オ" to "o",
             "カ" to "ka", "キ" to "ki", "ク" to "ku", "ケ" to "ke", "コ" to "ko",
