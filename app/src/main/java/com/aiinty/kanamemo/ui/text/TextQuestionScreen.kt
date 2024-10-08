@@ -22,10 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aiinty.kanamemo.core.kana.Constants
+import com.aiinty.kanamemo.core.question.TextQuestion
 import com.aiinty.kanamemo.ui.viewmodel.QuestionScreenViewModel
 
 @Composable
-fun TextQuestion(
+fun TextQuestionScreen(
     modifier: Modifier = Modifier,
     viewModel: QuestionScreenViewModel = viewModel()
 ) {
@@ -71,7 +72,7 @@ fun TextQuestion(
                 val length = textLength.value.toIntOrNull()
                 if (length != null && length > 0) {
                     showAnswer.value = false
-                    viewModel.createQuestion(textLength.value.toInt(), when(isHiragana.value) {
+                    viewModel.createTextQuestion(textLength.value.toInt(), when(isHiragana.value) {
                         true -> Constants.KanaType.HIRAGANA
                         false -> Constants.KanaType.KATAKANA
                     })
@@ -95,7 +96,7 @@ fun TextQuestion(
 
         Button(
             onClick = {
-                if (viewModel.question.text.isNotEmpty()) {
+                if (viewModel.question is TextQuestion && (viewModel.question as TextQuestion).text.isNotEmpty()) {
                     showAnswer.value = !showAnswer.value
                 }
             }

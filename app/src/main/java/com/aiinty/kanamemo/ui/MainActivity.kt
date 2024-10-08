@@ -1,4 +1,4 @@
-package com.aiinty.kanamemo
+package com.aiinty.kanamemo.ui
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.aiinty.kanamemo.ui.mora.MoraQuestion
+import com.aiinty.kanamemo.ui.mora.MoraQuestionScreen
 import com.aiinty.kanamemo.ui.theme.KanaMemoTheme
-import com.aiinty.kanamemo.ui.text.TextQuestion
+import com.aiinty.kanamemo.ui.text.TextQuestionScreen
 import com.aiinty.kanamemo.ui.navigation.Destination
 import com.aiinty.kanamemo.ui.navigation.NavigationBottomBar
 
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContent {
             KanaMemoApp(
                 startDestination = Destination.TEXT
@@ -48,13 +48,12 @@ fun KanaMemoApp(
                     startDestination = startDestination,
                 ) {
                     composable(Destination.TEXT) {
-                        TextQuestion()
+                        TextQuestionScreen()
                     }
                     composable(Destination.MORA){
-                        MoraQuestion()
+                        MoraQuestionScreen()
                     }
                 }
-
                 NavigationBottomBar(
                     modifier = Modifier.align(Alignment.BottomCenter),
                     navController = navController
