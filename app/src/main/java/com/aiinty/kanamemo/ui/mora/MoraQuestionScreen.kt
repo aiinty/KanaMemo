@@ -1,13 +1,27 @@
 package com.aiinty.kanamemo.ui.mora
 
+import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material3.Button
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.formatWithSkeleton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.aiinty.kanamemo.core.kana.Constants
+import com.aiinty.kanamemo.core.kana.Kana
 import com.aiinty.kanamemo.ui.viewmodel.QuestionScreenViewModel
 
 @Composable
@@ -17,10 +31,116 @@ fun MoraQuestionScreen(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp, 32.dp),
     ) {
+        val isHiragana = remember { mutableStateOf(true) }
+        val isKanaQuestion = remember { mutableStateOf(true) }
+        var answers = remember { mutableStateOf(arrayListOf("")) }
+        val context = LocalContext.current
+
+        Text(
+            text = viewModel.currentQuestion.question,
+            fontSize = 128.sp
+        )
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+
+            Column(Modifier.selectableGroup())
+            {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = isHiragana.value,
+                        onClick = { isHiragana.value = true }
+                    )
+                    Text(
+                        text = "Hiragana",
+                    )
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = !isHiragana.value,
+                        onClick = { isHiragana.value = false }
+                    )
+                    Text(
+                        text = "Katakana",
+                    )
+                }
+            }
+
+            Column(Modifier.selectableGroup())
+            {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = isKanaQuestion.value,
+                        onClick = { isKanaQuestion.value = true }
+                    )
+                    Text(
+                        text = "Kana",
+                    )
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = !isKanaQuestion.value,
+                        onClick = { isKanaQuestion.value = false }
+                    )
+                    Text(
+                        text = "Romaji",
+                    )
+                }
+            }
+
+        }
+
+        Button(
+            onClick = {
+                val kana = when(isHiragana.value) {
+                    true -> Constants.KanaType.HIRAGANA
+                    false -> Constants.KanaType.KATAKANA
+                }
+                viewModel.createMoraQuestion(isKanaQuestion.value, kana)
+                answers.value = arrayListOf(viewModel.currentQuestion.answer)
+                while (answers.value.size != 3) {
+                    val mora = Kana.randomMora(kana)
+                    if (mora.reading == viewModel.currentQuestion.answer || mora.reading == viewModel.currentQuestion.question) {
+                        continue
+                    }
+                    if (isKanaQuestion.value) {
+                        answers.value.add(mora.reading)
+                    }
+                    else {
+                        answers.value.add(mora.char)
+                    }
+                }
+                answers.value.shuffle()
+            }) {
+            Text(
+                text = "Random Mora",
+            )
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (answers.value.size == 3) {
+                answers.value.forEach { answer ->
+                    Button (
+                        onClick = {
+                            if (viewModel.currentQuestion.answer == answer) {
+                                Toast.makeText(context, "Correct ^.^", Toast.LENGTH_SHORT).show()
+                            }
+                            else {
+                                Toast.makeText(context, "Wrong :(", Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        modifier = Modifier.padding(horizontal = 16.dp)
+
+                    ) {
+                        Text(answer)
+                    }
+                }
+            }
+        }
 
     }
 }

@@ -51,12 +51,12 @@ object NavBarItems {
     val BarItems = listOf(
         BarItem(
             title = "Text",
-            imageId = R.drawable.language_japanese_kana,
+            imageId = R.drawable.notes,
             route = Destination.TEXT
         ),
         BarItem(
             title = "Mora",
-            imageId = R.drawable.notes,
+            imageId = R.drawable.language_japanese_kana,
             route = Destination.MORA
         )
     )

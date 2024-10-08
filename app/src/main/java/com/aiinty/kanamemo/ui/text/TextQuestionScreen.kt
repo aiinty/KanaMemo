@@ -1,6 +1,7 @@
 package com.aiinty.kanamemo.ui.text
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,7 @@ fun TextQuestionScreen(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = modifier.fillMaxSize().padding(16.dp, 32.dp),
     ) {
         val isHiragana = remember { mutableStateOf(true) }
@@ -79,7 +81,7 @@ fun TextQuestionScreen(
                 }
             }) {
             Text(
-                text = "Generate text",
+                text = "Random text",
             )
         }
 
@@ -90,13 +92,13 @@ fun TextQuestionScreen(
             modifier = Modifier.padding(top = 32.dp)
         )
         Text(
-            text = viewModel.question.question,
+            text = viewModel.currentQuestion.question,
             fontSize = 24.sp
         )
 
         Button(
             onClick = {
-                if (viewModel.question is TextQuestion && (viewModel.question as TextQuestion).text.isNotEmpty()) {
+                if (viewModel.currentQuestion is TextQuestion && (viewModel.currentQuestion as TextQuestion).text.isNotEmpty()) {
                     showAnswer.value = !showAnswer.value
                 }
             }
@@ -110,7 +112,7 @@ fun TextQuestionScreen(
         }
 
         Text(
-            text = "Answer text:",
+            text = "Romaji text:",
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 32.dp)
@@ -118,7 +120,7 @@ fun TextQuestionScreen(
 
         AnimatedVisibility(showAnswer.value) {
             Text(
-                text = viewModel.question.answer,
+                text = viewModel.currentQuestion.answer,
                 fontSize = 24.sp
             )
         }
