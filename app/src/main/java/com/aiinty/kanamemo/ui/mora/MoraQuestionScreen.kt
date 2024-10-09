@@ -2,6 +2,7 @@ package com.aiinty.kanamemo.ui.mora
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,6 +25,7 @@ import com.aiinty.kanamemo.core.kana.Constants
 import com.aiinty.kanamemo.core.kana.Kana
 import com.aiinty.kanamemo.ui.viewmodel.QuestionScreenViewModel
 
+@Preview
 @Composable
 fun MoraQuestionScreen(
     modifier: Modifier = Modifier,
@@ -31,19 +34,23 @@ fun MoraQuestionScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp, 32.dp),
+        modifier = modifier.fillMaxSize().padding(16.dp)
     ) {
         val isHiragana = remember { mutableStateOf(true) }
         val isKanaQuestion = remember { mutableStateOf(true) }
         var answers = remember { mutableStateOf(arrayListOf("")) }
         val context = LocalContext.current
 
-        Text(
-            text = viewModel.currentQuestion.question,
-            fontSize = 128.sp
-        )
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize().weight(1f)
+        ) {
+            Text(
+                text = viewModel.currentQuestion.question,
+                fontSize = 128.sp,
+            )
+        }
+
 
         Row (verticalAlignment = Alignment.CenterVertically) {
 

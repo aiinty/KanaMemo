@@ -1,13 +1,17 @@
 package com.aiinty.kanamemo.ui.text
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -19,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,6 +31,7 @@ import com.aiinty.kanamemo.core.kana.Constants
 import com.aiinty.kanamemo.core.question.TextQuestion
 import com.aiinty.kanamemo.ui.viewmodel.QuestionScreenViewModel
 
+@Preview
 @Composable
 fun TextQuestionScreen(
     modifier: Modifier = Modifier,
@@ -33,21 +39,74 @@ fun TextQuestionScreen(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier.fillMaxSize().padding(16.dp, 32.dp),
+        modifier = modifier.fillMaxSize().padding(16.dp),
     ) {
         val isHiragana = remember { mutableStateOf(true) }
         val textLength = remember { mutableStateOf("") }
         val showAnswer = remember { mutableStateOf(false) }
 
+        Column (
+            modifier = Modifier.fillMaxSize().weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Kana text:",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = viewModel.currentQuestion.question,
+                fontSize = 24.sp,
+                modifier = Modifier.verticalScroll(rememberScrollState()).weight(1f)
+            )
+        }
+
+        Column (
+            modifier = Modifier.fillMaxSize().padding(top = 16.dp).weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Romaji text:",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+            )
+
+            AnimatedVisibility(
+                showAnswer.value,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = viewModel.currentQuestion.answer,
+                    fontSize = 24.sp,
+                    modifier = Modifier.verticalScroll(rememberScrollState())
+                )
+            }
+        }
+
+        Button(
+            onClick = {
+                if (viewModel.currentQuestion is TextQuestion && (viewModel.currentQuestion as TextQuestion).text.isNotEmpty()) {
+                    showAnswer.value = !showAnswer.value
+                }
+            }
+        ) {
+            AnimatedVisibility(showAnswer.value) {
+                Text("Hide answer")
+            }
+            AnimatedVisibility(!showAnswer.value) {
+                Text("Show answer")
+            }
+        }
+
         OutlinedTextField(
             value = textLength.value,
             onValueChange = { textLength.value = it },
             label = { Text("Enter length") },
+            modifier = Modifier.padding(top = 32.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
-        Column(Modifier.selectableGroup())
+        Row (Modifier.selectableGroup())
         {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
@@ -82,46 +141,6 @@ fun TextQuestionScreen(
             }) {
             Text(
                 text = "Random text",
-            )
-        }
-
-        Text(
-            text = "Kana text:",
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 32.dp)
-        )
-        Text(
-            text = viewModel.currentQuestion.question,
-            fontSize = 24.sp
-        )
-
-        Button(
-            onClick = {
-                if (viewModel.currentQuestion is TextQuestion && (viewModel.currentQuestion as TextQuestion).text.isNotEmpty()) {
-                    showAnswer.value = !showAnswer.value
-                }
-            }
-        ) {
-            AnimatedVisibility(showAnswer.value) {
-                Text("Hide answer")
-            }
-            AnimatedVisibility(!showAnswer.value) {
-                Text("Show answer")
-            }
-        }
-
-        Text(
-            text = "Romaji text:",
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 32.dp)
-        )
-
-        AnimatedVisibility(showAnswer.value) {
-            Text(
-                text = viewModel.currentQuestion.answer,
-                fontSize = 24.sp
             )
         }
     }
