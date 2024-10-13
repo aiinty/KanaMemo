@@ -1,9 +1,6 @@
 package com.aiinty.kanamemo.ui.text
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -85,7 +82,8 @@ fun TextQuestionScreen(
 
         Button(
             onClick = {
-                if (viewModel.currentQuestion is TextQuestion && (viewModel.currentQuestion as TextQuestion).text.isNotEmpty()) {
+                if (viewModel.currentQuestion is TextQuestion
+                    && (viewModel.currentQuestion as TextQuestion).text.isNotEmpty()) {
                     showAnswer.value = !showAnswer.value
                 }
             }
@@ -133,10 +131,11 @@ fun TextQuestionScreen(
                 val length = textLength.value.toIntOrNull()
                 if (length != null && length > 0) {
                     showAnswer.value = false
-                    viewModel.createTextQuestion(textLength.value.toInt(), when(isHiragana.value) {
-                        true -> Constants.KanaType.HIRAGANA
-                        false -> Constants.KanaType.KATAKANA
-                    })
+                    when(isHiragana.value) {
+                        true -> viewModel.currentKana = Constants.KanaType.HIRAGANA
+                        false -> viewModel.currentKana = Constants.KanaType.KATAKANA
+                    }
+                    viewModel.createTextQuestion(textLength.value.toInt())
                 }
             }) {
             Text(

@@ -10,7 +10,26 @@ class Kana {
     companion object {
 
         /**
-         * Gets one random mora from [kana].
+         * Creates mora from string by reading.
+         * @return mora that have [str] reading in [kana].
+         */
+        fun moraFromString(str: String, kana: KanaType) : Mora {
+            val char = when (kana) {
+                KanaType.HIRAGANA -> Constants.BASIC_HIRAGANA.filterValues { it == str }.keys
+                KanaType.KATAKANA -> Constants.BASIC_HIRAGANA.filterValues { it == str }.keys
+            }
+            if (char.size > 1) {
+                // FIXME: ぢ and じ, ず and づ have the same readings
+                //throw Exception("'${str}' has more than one char in ${kana.name}")
+            }
+            if (char.isEmpty()) {
+                throw Exception("'${str}' doesn't have char in ${kana.name}")
+            }
+            return Mora (char.first(), str)
+        }
+
+        /**
+         * Creates one random mora from [kana].
          * @return random mora of a certain [kana].
          */
         fun randomMora(kana: KanaType) : Mora {

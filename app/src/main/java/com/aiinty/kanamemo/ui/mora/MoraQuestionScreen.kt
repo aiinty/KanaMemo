@@ -38,7 +38,7 @@ fun MoraQuestionScreen(
     ) {
         val isHiragana = remember { mutableStateOf(true) }
         val isKanaQuestion = remember { mutableStateOf(true) }
-        var answers = remember { mutableStateOf(arrayListOf("")) }
+        val answers = remember { mutableStateOf(arrayListOf("")) }
         val context = LocalContext.current
 
         Box(
@@ -102,18 +102,22 @@ fun MoraQuestionScreen(
 
         Button(
             onClick = {
-                val kana = when(isHiragana.value) {
-                    true -> Constants.KanaType.HIRAGANA
-                    false -> Constants.KanaType.KATAKANA
+                when(isHiragana.value) {
+                    true -> viewModel.currentKana = Constants.KanaType.HIRAGANA
+                    false -> viewModel.currentKana = Constants.KanaType.KATAKANA
                 }
-                viewModel.createMoraQuestion(isKanaQuestion.value, kana)
+                viewModel.isKanaQuestion = isKanaQuestion.value
+                val kana = viewModel.currentKana
+
+                viewModel.createMoraQuestion(context)
                 answers.value = arrayListOf(viewModel.currentQuestion.answer)
                 while (answers.value.size != 3) {
                     val mora = Kana.randomMora(kana)
-                    if (mora.reading == viewModel.currentQuestion.answer || mora.reading == viewModel.currentQuestion.question) {
+                    if (mora.reading == viewModel.currentQuestion.answer ||
+                        mora.reading == viewModel.currentQuestion.question) {
                         continue
                     }
-                    if (isKanaQuestion.value) {
+                    if (viewModel.isKanaQuestion) {
                         answers.value.add(mora.reading)
                     }
                     else {
@@ -132,6 +136,11 @@ fun MoraQuestionScreen(
                 answers.value.forEach { answer ->
                     Button (
                         onClick = {
+                            if (viewModel.isKanaQuestion) {
+                                viewModel.readingToSpeech(answer)
+                            } else {
+                                viewModel.moraToSpeech(answer)
+                            }
                             if (viewModel.currentQuestion.answer == answer) {
                                 Toast.makeText(context, "Correct ^.^", Toast.LENGTH_SHORT).show()
                             }
@@ -140,7 +149,6 @@ fun MoraQuestionScreen(
                             }
                         },
                         modifier = Modifier.padding(horizontal = 16.dp)
-
                     ) {
                         Text(answer)
                     }
