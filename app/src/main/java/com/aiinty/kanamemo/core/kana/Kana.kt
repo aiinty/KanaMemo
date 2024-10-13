@@ -18,10 +18,10 @@ class Kana {
                 KanaType.HIRAGANA -> Constants.BASIC_HIRAGANA.filterValues { it == str }.keys
                 KanaType.KATAKANA -> Constants.BASIC_HIRAGANA.filterValues { it == str }.keys
             }
-            if (char.size > 1) {
-                // FIXME: ぢ and じ, ず and づ have the same readings
-                //throw Exception("'${str}' has more than one char in ${kana.name}")
-            }
+            // FIXME: e.g. ぢ and じ, ず and づ have the same readings in Hepburn
+//            if (char.size > 1) {
+//                throw Exception("'${str}' has more than one char in ${kana.name}")
+//            }
             if (char.isEmpty()) {
                 throw Exception("'${str}' doesn't have char in ${kana.name}")
             }
