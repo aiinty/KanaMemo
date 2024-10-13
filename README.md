@@ -7,6 +7,7 @@ Mobile app that helps you memorise Japanese alphabets.
 - Jetpack Compose
 - Navigation
 - ViewModel
+- TextToSpeech
 
 ## Result
 
