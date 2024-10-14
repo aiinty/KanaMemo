@@ -13,7 +13,7 @@ import com.aiinty.kanamemo.core.question.Question
 import com.aiinty.kanamemo.core.question.KanaQuestion
 import com.aiinty.kanamemo.core.question.RomajiQuestion
 
-class QuestionScreenViewModel : ViewModel() {
+class KanaMemoViewModel : ViewModel() {
 
     var currentQuestion by mutableStateOf<Question>(TextQuestion())
     var currentKana by mutableStateOf(Constants.KanaType.HIRAGANA)
@@ -30,6 +30,10 @@ class QuestionScreenViewModel : ViewModel() {
             true -> KanaQuestion(Kana.randomMora(currentKana))
             false -> RomajiQuestion(Kana.randomMora(currentKana))
         }
+    }
+
+    fun createLearnScreen(context: Context) {
+        ttsService = TTSService(context)
     }
 
     fun readingToSpeech(reading: String) {

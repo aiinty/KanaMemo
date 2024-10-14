@@ -23,13 +23,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aiinty.kanamemo.core.kana.Constants
 import com.aiinty.kanamemo.core.kana.Kana
-import com.aiinty.kanamemo.ui.viewmodel.QuestionScreenViewModel
+import com.aiinty.kanamemo.ui.viewmodel.KanaMemoViewModel
 
 @Preview
 @Composable
 fun MoraQuestionScreen(
     modifier: Modifier = Modifier,
-    viewModel: QuestionScreenViewModel = viewModel()
+    viewModel: KanaMemoViewModel = viewModel()
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

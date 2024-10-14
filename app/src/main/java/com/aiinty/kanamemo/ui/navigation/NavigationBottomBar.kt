@@ -58,6 +58,11 @@ object NavBarItems {
             title = "Mora",
             imageId = R.drawable.language_japanese_kana,
             route = Destination.MORA
+        ),
+        BarItem(
+            title = "Learn",
+            imageId = R.drawable.book,
+            route = Destination.LEARN
         )
     )
 }

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.aiinty.kanamemo.ui.learn.LearnScreen
 import com.aiinty.kanamemo.ui.mora.MoraQuestionScreen
 import com.aiinty.kanamemo.ui.theme.KanaMemoTheme
 import com.aiinty.kanamemo.ui.text.TextQuestionScreen
@@ -58,6 +59,9 @@ fun KanaMemoApp(
                     }
                     composable(Destination.MORA){
                         MoraQuestionScreen()
+                    }
+                    composable(Destination.LEARN){
+                        LearnScreen()
                     }
                 }
             }

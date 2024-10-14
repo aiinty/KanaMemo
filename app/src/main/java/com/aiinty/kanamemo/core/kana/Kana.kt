@@ -10,6 +10,14 @@ class Kana {
     companion object {
 
         /**
+         * Creates mora from [Map.Entry]<String, String>.
+         * @return mora that have [Map.Entry.key] char, and [Map.Entry.value] reading.
+         */
+        fun moraFromMapEntry(entry: Map.Entry<String, String>) : Mora {
+            return Mora (entry.key, entry.value)
+        }
+
+        /**
          * Creates mora from string by reading.
          * @return mora that have [str] reading in [kana].
          */
