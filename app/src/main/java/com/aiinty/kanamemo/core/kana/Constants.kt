@@ -30,8 +30,8 @@ class Constants {
             "ば" to "ba", "び" to "bi", "ぶ" to "bu", "べ" to "be", "ぼ" to "bo",
             "ぱ" to "pa", "ぴ" to "pi", "ぷ" to "pu", "ぺ" to "pe", "ぽ" to "po",
             "ま" to "ma", "み" to "mi", "む" to "me", "め" to "me", "も" to "mo",
-            "や" to "ya", "ゆ" to "yu", "よ" to "yo",
             "ら" to "ra", "り" to "ri", "る" to "ru", "れ" to "re", "ろ" to "ro",
+            "や" to "ya", "ゆ" to "yu", "よ" to "yo",
             "わ" to "wa", "を" to "wo", "ん" to "n",
        )
         /**
@@ -50,8 +50,8 @@ class Constants {
             "バ" to "ba", "ビ" to "bi", "ブ" to "bu", "ベ" to "be", "ボ" to "bo",
             "パ" to "pa", "ピ" to "pi", "プ" to "pu", "ペ" to "pe", "ポ" to "po",
             "マ" to "ma", "ミ" to "mi", "ム" to "mu", "メ" to "me", "モ" to "mo",
-            "ヤ" to "ya", "ユ" to "yu", "ヨ" to "yo",
             "ラ" to "ra", "リ" to "ri", "ル" to "ru", "レ" to "re", "ロ" to "ro",
+            "ヤ" to "ya", "ユ" to "yu", "ヨ" to "yo",
             "ワ" to "wa", "ヲ" to "wo", "ン" to "n",
         )
     }

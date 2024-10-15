@@ -8,11 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -81,33 +78,36 @@ fun LearnScreen(
 }
 
 @Composable
-private fun CreateMoraList(kana: Constants.KanaType, itemsPerRow: Int) {
-    var iterator: Iterator<Map.Entry<String, String>>? = null
-    var size = 0
-     when(kana) {
-        Constants.KanaType.HIRAGANA -> {
-            iterator = Constants.BASIC_HIRAGANA.iterator()
-            size = Constants.BASIC_HIRAGANA.size / itemsPerRow
-        }
-        Constants.KanaType.KATAKANA -> {
-            iterator = Constants.BASIC_KATAKANA.iterator()
-            size = Constants.BASIC_KATAKANA.size / itemsPerRow
-        }
+private fun CreateMoraList(
+    kanaType: Constants.KanaType,
+    itemsPerRow: Int
+) {
+    val kana = when(kanaType) {
+        Constants.KanaType.HIRAGANA -> Constants.BASIC_HIRAGANA
+        Constants.KanaType.KATAKANA -> Constants.BASIC_KATAKANA
     }
+    val rows = mutableListOf<List<Mora>>()
+    var currentRow = mutableListOf<Mora>()
+    kana.forEach { entry ->
+        if (currentRow.size == itemsPerRow) {
+            rows.plusAssign(currentRow)
+            currentRow = mutableListOf()
+        }
+        currentRow.plusAssign(Kana.moraFromMapEntry(entry))
+    }
+    if (currentRow.size > 0) {
+        rows.plusAssign(currentRow)
+    }
+
     LazyColumn (
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        items(size) {
-            while (iterator.hasNext()){
-                Row(Modifier.fillMaxWidth()) {
-                    for (i in 0..<itemsPerRow) {
-                        if (iterator.hasNext()) {
-                            MoraItem(Modifier.weight(1f), Kana.moraFromMapEntry(iterator.next()))
-                        }
-                    }
+        items(rows) { row ->
+            Row {
+                row.forEach { item ->
+                    MoraItem(Modifier.weight(1f), item)
                 }
-
             }
         }
     }
@@ -119,7 +119,6 @@ private fun MoraItem(
     mora: Mora,
     viewModel: KanaMemoViewModel = viewModel()
 ) {
-    // TODO: add tts
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.clickable { viewModel.moraToSpeech(mora.char) }
