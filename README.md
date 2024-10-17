@@ -11,5 +11,5 @@ Mobile app that helps you memorise Japanese alphabets.
 
 ## Result
 
-| ![text](preview1.jpg) | ![kana](preview2.jpg)
-|----------|:-------------:|
+| ![text](preview1.jpg) | ![kana](preview2.jpg) | ![learn](preview3.jpg)
+|----------|:-------------:|:-------------:|
